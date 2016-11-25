@@ -9,11 +9,6 @@ os:
   - linux
   - osx
 
-matrix:
-  allow_failures:
-    - rvm: ruby-head
-    - rvm: rbx
-
 before_install:
   - gem install bundler
   - bundle install --path vendor/bundle

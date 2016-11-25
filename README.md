@@ -1,5 +1,7 @@
 # Kintone CLI
 
+[![Build Status](https://travis-ci.org/miya0001/kintone-cli.svg?branch=master)](https://travis-ci.org/miya0001/kintone-cli)
+
 This project is in progress...
 
 ## Development

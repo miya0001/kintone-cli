@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require "kintone/cli"
+
+Kintone_Cli::Command.start

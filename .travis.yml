@@ -3,11 +3,16 @@ language: ruby
 rvm:
   - 2.1.7
   - 2.2.3
+  - 2.3.3
   - ruby-head
 
 os:
   - linux
   - osx
+
+matrix:
+  allow_failures:
+    - rvm: ruby-head
 
 before_install:
   - gem install bundler

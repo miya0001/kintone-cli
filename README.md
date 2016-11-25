@@ -1,4 +1,4 @@
-# Kintone Cli
+# Kintone CLI
 
 This project is in progress...
 

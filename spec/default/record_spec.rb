@@ -58,6 +58,18 @@ describe Kintone_Cli::Command do
     }
 
     expect( JSON.parse( output ).count ).to eq 2
+
+    output = capture(:stdout) {
+      Kintone_Cli::Command.start( [
+        "record",
+        "delete",
+        "--app=5",
+        "--environment=default",
+        "--ids=#{output}"
+      ] )
+    }
+
+    expect( output ).to eq "{}\n"
   end
 
   it "Update a record" do
@@ -106,42 +118,6 @@ describe Kintone_Cli::Command do
     }
 
     expect( JSON.parse( output ).count ).to eq before.count
-  end
-
-  it "Delete a record" do
-    output = capture(:stdout) {
-      Kintone_Cli::Command.start( [
-        "record",
-        "get",
-        "--app=5",
-        "--environment=default"
-      ] )
-    }
-    before = JSON.parse( output )
-
-    ids = []
-    before.each do | item |
-      item.each do | key, value |
-        if '$id' == key
-          ids.push( value["value"] )
-        end
-      end
-      if 2 == ids.count
-        break
-      end
-    end
-
-    output = capture(:stdout) {
-      Kintone_Cli::Command.start( [
-        "record",
-        "delete",
-        "--app=5",
-        "--environment=default",
-        "--ids=#{JSON.generate(ids)}"
-      ] )
-    }
-
-    expect( output ).to eq "{}\n"
   end
 
   before( :all ) do

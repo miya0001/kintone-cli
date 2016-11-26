@@ -46,8 +46,8 @@ describe Kintone_Cli::Command do
     }.to raise_error( SystemExit )
   end
 
-  it "Post two new records" do
-    output = capture(:stdout) {
+  it "Post two new records then update and delete them" do
+    posted = capture(:stdout) {
       Kintone_Cli::Command.start( [
         "record",
         "post",
@@ -57,41 +57,9 @@ describe Kintone_Cli::Command do
       ] )
     }
 
-    expect( JSON.parse( output ).count ).to eq 2
+    expect( JSON.parse( posted ).count ).to eq 2
 
-    output = capture(:stdout) {
-      Kintone_Cli::Command.start( [
-        "record",
-        "delete",
-        "--app=5",
-        "--environment=default",
-        "--ids=#{output}"
-      ] )
-    }
-
-    expect( output ).to eq "{}\n"
-  end
-
-  it "Update a record" do
-    output = capture(:stdout) {
-      Kintone_Cli::Command.start( [
-        "record",
-        "get",
-        "--app=5",
-        "--environment=default"
-      ] )
-    }
-    before = JSON.parse( output )
-
-    ids = []
-    before.each do | item |
-      item.each do | key, value |
-        if '$id' == key
-          ids.push( value["value"] )
-        end
-      end
-    end
-
+    ids = JSON.parse( posted )
     update = []
     ids.each do | item |
       update.push(
@@ -107,7 +75,7 @@ describe Kintone_Cli::Command do
       file.puts YAML.dump( update )
     end
 
-    output = capture(:stdout) {
+    updated = capture(:stdout) {
       Kintone_Cli::Command.start( [
         "record",
         "put",
@@ -117,7 +85,19 @@ describe Kintone_Cli::Command do
       ] )
     }
 
-    expect( JSON.parse( output ).count ).to eq before.count
+    expect( JSON.parse( updated ).count ).to eq 2
+
+    output = capture(:stdout) {
+      Kintone_Cli::Command.start( [
+        "record",
+        "delete",
+        "--app=5",
+        "--environment=default",
+        "--ids=#{posted}"
+      ] )
+    }
+
+    expect( output ).to eq "{}\n"
   end
 
   before( :all ) do

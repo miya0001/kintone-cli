@@ -50,16 +50,6 @@ describe Kintone_Cli::Command do
     output = capture(:stdout) {
       Kintone_Cli::Command.start( [
         "record",
-        "get",
-        "--app=5",
-        "--environment=default"
-      ] )
-    }
-    before = JSON.parse( output ).count
-
-    output = capture(:stdout) {
-      Kintone_Cli::Command.start( [
-        "record",
         "post",
         "./spec/data/post.yml",
         "--app=5",
@@ -67,17 +57,7 @@ describe Kintone_Cli::Command do
       ] )
     }
 
-    output = capture(:stdout) {
-      Kintone_Cli::Command.start( [
-        "record",
-        "get",
-        "--app=5",
-        "--environment=default"
-      ] )
-    }
-    after = JSON.parse( output ).count
-
-    expect( before + 2 ).to eq after
+    expect( JSON.parse( output ).count ).to eq 2
   end
 
   it "Update a record" do
@@ -146,9 +126,11 @@ describe Kintone_Cli::Command do
           ids.push( value["value"] )
         end
       end
+      if 2 == ids.count
+        break
+      end
     end
 
-    ids.shift
     output = capture(:stdout) {
       Kintone_Cli::Command.start( [
         "record",

@@ -3,10 +3,67 @@
 
 require "yaml"
 require "shell"
+require "rest-client"
+require "base64"
+require "json"
 
 module Kintone_Cli
   class Utils
     class << self
+
+      def print( options )
+        if "json" == options[:format]
+          puts JSON.generate( options[:rows] )
+        else
+          table = options[:rows].map.with_index{ | row | parse_row( options[:cols], row ) }
+          Utils::print_table( options[:cols], table )
+        end
+      end # end print
+
+      def send( url, method, params = {} )
+        if nil == $env || ! $env["subdomain"]
+          $stderr.puts "Subdomain is not defined."
+          exit 1
+        end
+
+        api = sprintf( "https://%s.cybozu.com/k/v1", $env["subdomain"] ) + url;
+
+        begin
+          response = RestClient::Request.execute(
+            :method => method,
+            :url => api,
+            :payload => JSON.generate( params ),
+            :headers => http_headers
+          )
+          return JSON.parse( response )
+        rescue RestClient::ExceptionWithResponse => e
+          $stderr.puts e.message
+          exit 1
+        rescue => e
+          $stderr.puts e.message
+          exit 1
+        end
+      end # end send
+
+      def http_headers
+        if nil == $env
+          raise "Kintonefile not found"
+        end
+
+        headers = {
+          :content_type => :json,
+          :accept => :json
+        }
+
+        if $env["user"] && $env["password"]
+          auth = Base64.strict_encode64( $env["user"] + ':' + $env["password"] )
+          headers.merge!( {
+            "X-Cybozu-Authorization" => auth
+          } )
+        end
+
+        return headers
+      end
 
       def get_env( envs, options )
         if options["environment"]

@@ -4,9 +4,8 @@
 require "kintone/cli/version"
 require "kintone/cli/utils"
 require "kintone/cli/app"
+require "kintone/cli/record"
 require "thor"
-require "rest-client"
-require "yaml"
 
 module Kintone_Cli
 
@@ -17,8 +16,11 @@ module Kintone_Cli
     class_option :user, type: :string, desc: 'The username of the Kintone.'
     class_option :password, type: :string, desc: 'The password of the Kintone.'
 
-    desc "app <SUBCOMMAND>", "Manage apps on the Kintone."
+    desc "app <subcommand>", "Manage apps on the Kintone."
     subcommand "app", App
+
+    desc "record <subcommand>", "Manage records on the Kintone."
+    subcommand "record", Record
 
     desc "init", "Generates a new Kintonefile."
     def init

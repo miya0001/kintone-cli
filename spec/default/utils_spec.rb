@@ -7,6 +7,18 @@ require 'kintone/cli'
 
 describe Kintone_Cli::Utils do
 
+  it "Tests for getting http headers" do
+    $env = {
+      "user" => "user",
+      "password" => "pass",
+      "subdomain" => "staging-subdomain"
+    }
+
+    result = Kintone_Cli::Utils::http_headers
+    auth = Base64.strict_decode64( result["X-Cybozu-Authorization"] )
+    expect( auth ).to eq $env["user"] + ":" + $env["password"]
+  end
+
   it "Tests for getting an environment" do
     envs = {
       'default' => {

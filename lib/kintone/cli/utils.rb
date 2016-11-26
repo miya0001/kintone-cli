@@ -20,6 +20,19 @@ module Kintone_Cli
         end
       end # end print
 
+      def kintone_record_to_array( records )
+        items = []
+        records.each do | record |
+          item = {}
+          record.each do | key, value |
+            item[key] = value["value"]
+          end
+          items.push( item )
+        end
+
+        return items
+      end
+
       def parse_yaml(yaml)
         items = YAML.load_file( yaml )
 

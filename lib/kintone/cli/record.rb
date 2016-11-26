@@ -16,17 +16,19 @@ module Kintone_Cli
       if options[:id]
         url = "/record.json"
         params = { "app" => options[:app], "id" => options[:id] }
-        root = "record"
+        res = Kintone_Cli::Utils.send( url, :get, params )
+        records = [ res["record"] ]
       else
         url = "/records.json"
         params = { "app" => options[:app] }
-        root = "records"
+        res = Kintone_Cli::Utils.send( url, :get, params )
+        records = res["records"]
       end
-      res = Kintone_Cli::Utils.send( url, :get, params )
+      records = Kintone_Cli::Utils.kintone_record_to_array( records )
       if "yaml" == options[:format]
-        puts YAML.dump( res[ root ] )
+        puts YAML.dump( records )
       else
-        puts JSON.generate( res[ root ] )
+        puts JSON.generate( records )
       end
     end # end get
 

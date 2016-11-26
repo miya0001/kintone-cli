@@ -82,6 +82,7 @@ module Kintone_Cli
         "ids" => JSON.parse( options[:ids] )
       }
       res = Kintone_Cli::Utils.send( "/records.json", :delete, params )
+      puts JSON.generate( res )
     end # end get
   end
 end

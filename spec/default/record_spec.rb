@@ -141,16 +141,7 @@ describe Kintone_Cli::Command do
       ] )
     }
 
-    output = capture(:stdout) {
-      Kintone_Cli::Command.start( [
-        "record",
-        "get",
-        "--app=5",
-        "--environment=default"
-      ] )
-    }
-
-    expect( JSON.parse( output ).count ).to eq 1
+    expect( output ).to eq "{}\n"
   end
 
   before( :all ) do

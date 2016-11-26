@@ -7,8 +7,11 @@ require "json"
 module Kintone_Cli
 
   class Record < Thor
-    class_option :app, :desc => "The applicatin ID.",
-        :type => :numeric, :required => true
+    class_option :app, :desc => "The applicatin ID.", :type => :numeric, :required => true
+    class_option :environment, aliases: "-e", type: :string, desc: 'Your environment in the Kintonefile.'
+    class_option :subdomain, aliases: "-s", type: :string, desc: 'The subdomain of the Kintone.'
+    class_option :user, aliases: "-u", type: :string, desc: 'The username of the Kintone.'
+    class_option :password, aliases: "-p", type: :string, desc: 'The password of the Kintone.'
 
     desc "record get", "Get a list of records."
     method_option :id, :desc => "The record ID."

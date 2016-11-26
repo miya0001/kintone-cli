@@ -13,12 +13,27 @@ describe Kintone_Cli::Command do
         "record",
         "get",
         "--app=5",
-        "--subdomain=" + ENV['KINTONE_SUBDOMAIN'],
-        "--user=" + ENV['KINTONE_USER'],
-        "--password=" + ENV['KINTONE_PASSWORD']
+        "--subdomain=#{ENV['KINTONE_SUBDOMAIN']}",
+        "--user=#{ENV['KINTONE_USER']}",
+        "--password=#{ENV['KINTONE_PASSWORD']}"
       ] )
     }
     expect( JSON.parse( output ).count ).to be > 0
+  end
+
+  it "Get the record from kintone record api with incorrect params" do
+    expect{
+      capture(:stderr) {
+        Kintone_Cli::Command.start( [
+          "record",
+          "get",
+          "--app=5",
+          "--subdomain=#{ENV['KINTONE_SUBDOMAIN']}",
+          "--user=#{ENV['KINTONE_USER']}",
+          "--password=1111"
+        ] )
+      }
+    }.to raise_error( SystemExit )
   end
 
   it "Get the record from kintone record api with Kintonefile" do

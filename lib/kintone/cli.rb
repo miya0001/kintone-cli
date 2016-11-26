@@ -8,9 +8,7 @@ require "kintone/cli/record"
 require "thor"
 
 module Kintone_Cli
-
   class Command < Thor
-
     class_option :environment, aliases: "-e", type: :string, desc: 'Your environment in the Kintonefile.'
     class_option :subdomain, aliases: "-s", type: :string, desc: 'The subdomain of the Kintone.'
     class_option :user, aliases: "-u", type: :string, desc: 'The username of the Kintone.'

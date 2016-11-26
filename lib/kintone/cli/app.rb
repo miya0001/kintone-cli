@@ -6,12 +6,23 @@ require "thor"
 module Kintone_Cli
 
   class App < Thor
-    desc "app create <MESSAGE>", "Send a push to devices or another persons."
-    method_option :title, :desc => "Title of the notification."
-    method_option :device, :desc => "Iden of the target device to push."
-    method_option :url, :desc => "The url to open."
-    # method_option :person, :aliases => "-p", :desc => "Delete the file after parsing it"
-    def create( message = "" )
+
+    desc "app list", "Get a list of apps."
+    method_option :field, :desc => "Prints the value of a single field for each."
+    method_option :fields, :desc => "Limit the output to specific object fields."
+    method_option :format, :desc => "Render output in a particular format."
+    def list
+      p $options
+      puts "hello"
+    end # end create
+
+    desc "app create <file>", "Create an app."
+    def create( yaml )
+      puts "hello"
+    end # end create
+
+    desc "app update <file>", "Update an app."
+    def update( yaml )
       puts "hello"
     end # end create
 

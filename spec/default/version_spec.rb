@@ -7,8 +7,13 @@ require 'kintone/cli'
 
 describe Kintone_Cli::Command do
 
-  specify{ expect{
-    Kintone_Cli::Command.new.invoke( :version, [], {} )
-  }.to output( Kintone_Cli::VERSION + "\n" ).to_stdout }
+  it "Get the record from kintone record api" do
+    output = capture(:stdout) {
+      Kintone_Cli::Command.start( [
+        "version"
+      ] )
+    }
+    expect( output ).to eq Kintone_Cli::VERSION + "\n"
+  end
 
 end

@@ -7,7 +7,8 @@ require "json"
 module Kintone_Cli
 
   class Record < Thor
-    class_option :app, :desc => "The applicatin ID.", :required => true
+    class_option :app, :desc => "The applicatin ID.",
+        :type => :numeric, :required => true
 
     desc "record get", "Get a list of records."
     method_option :id, :desc => "The record ID."
@@ -43,13 +44,34 @@ module Kintone_Cli
 
     desc "record put", "Update a list of records."
     def put( yaml )
-      records = YAML.load_file( yaml )
+      items = YAML.load_file( yaml )
+
+      update = []
+      items.each do | item |
+
+        record = {
+          "id" => nil,
+          "record" => {}
+        }
+        item.each do | key, value |
+          if "id" == key
+            record[key] = value
+          else
+            record["record"][key] = {
+              "value" => value
+            }
+          end
+        end
+        update.push( record )
+      end
+
       params = {
         "app" => options[:app],
-        "records" => records
+        "records" => update
       }
+
       res = Kintone_Cli::Utils.send( "/records.json", :put, params )
-      puts JSON.generate( res["ids"] )
+      puts JSON.generate( res["records"] )
     end # end get
 
     desc "record delete", "Delete a list of records."

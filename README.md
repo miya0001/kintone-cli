@@ -14,13 +14,23 @@ $ cd kintone-cli
 $ bundle install --path vendor/bundle
 ```
 
-Run cli.
+Run CLI.
 
 ```
 $ bundle exec exe/kt
 ```
 
-Automated testing.
+## Automated testing.
+
+Add environment variables like following.
+
+```
+export KINTONE_SUBDOMAIN=xxxx
+export KINTONE_USER=yyyy
+export KINTONE_PASSWORD=zzzz
+```
+
+Then run rspec.
 
 ```
 $ bundle exec rspec

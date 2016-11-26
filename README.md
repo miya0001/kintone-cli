@@ -4,6 +4,10 @@
 
 This project is in progress...
 
+## Requires
+
+* Ruby 2.2 or later
+
 ## Development
 
 Install dependencies.

@@ -20,6 +20,29 @@ module Kintone_Cli
         end
       end # end print
 
+      def parse_yaml(yaml)
+        items = YAML.load_file( yaml )
+
+        kintone_array = []
+        items.each do | item |
+          record = {
+            "record" => {}
+          }
+          item.each do | key, value |
+            if "id" == key
+              record["id"] = value
+            else
+              record["record"][key] = {
+                "value" => value
+              }
+            end
+          end
+          kintone_array.push( record )
+        end
+
+        return kintone_array
+      end
+
       def send( url, method, params = {} )
         if nil == $env || ! $env["subdomain"]
           $stderr.puts "Subdomain is not defined."

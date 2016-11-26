@@ -33,10 +33,14 @@ module Kintone_Cli
 
     desc "record post", "Post a list of records."
     def post( yaml )
-      records = YAML.load_file( yaml )
+      records = Kintone_Cli::Utils.parse_yaml( yaml )
+      posts = []
+      records.each do | item |
+        posts.push( item["record"] )
+      end
       params = {
         "app" => options[:app],
-        "records" => records
+        "records" => posts
       }
       res = Kintone_Cli::Utils.send( "/records.json", :post, params )
       puts JSON.generate( res["ids"] )
@@ -44,26 +48,7 @@ module Kintone_Cli
 
     desc "record put", "Update a list of records."
     def put( yaml )
-      items = YAML.load_file( yaml )
-
-      update = []
-      items.each do | item |
-
-        record = {
-          "id" => nil,
-          "record" => {}
-        }
-        item.each do | key, value |
-          if "id" == key
-            record[key] = value
-          else
-            record["record"][key] = {
-              "value" => value
-            }
-          end
-        end
-        update.push( record )
-      end
+      update = Kintone_Cli::Utils.parse_yaml( yaml )
 
       params = {
         "app" => options[:app],

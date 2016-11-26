@@ -115,8 +115,4 @@ EOL
     end
   end
 
-  after( :all ) do
-    File.delete( "./Kintonefile" )
-  end
-
 end

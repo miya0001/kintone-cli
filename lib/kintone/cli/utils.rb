@@ -55,11 +55,6 @@ module Kintone_Cli
       end
 
       def send( url, method, params = {} )
-        if nil == $env || ! $env["subdomain"]
-          $stderr.puts "Subdomain is not defined."
-          exit 1
-        end
-
         api = sprintf( "https://%s.cybozu.com/k/v1", $env["subdomain"] ) + url;
 
         begin
@@ -80,10 +75,6 @@ module Kintone_Cli
       end # end send
 
       def http_headers
-        if nil == $env
-          raise "Kintonefile not found"
-        end
-
         headers = {
           :content_type => :json,
           :accept => :json

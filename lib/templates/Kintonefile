@@ -1,0 +1,9 @@
+<% environment %>:
+  subdomain: <% subdomain %>
+  user: <% user %>
+  password: <% password %>
+
+staging:
+  subdomain: "subdomain"
+  user: "user"
+  password: "password"

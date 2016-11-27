@@ -22,7 +22,7 @@ module Kintone_Cli
 
     desc "init", "Generates a new Kintonefile."
     def init
-      puts Kintone_Cli::VERSION
+      puts options
     end
 
     desc "version", "Displays the version of the Kintone CLI."
@@ -32,8 +32,15 @@ module Kintone_Cli
 
     no_commands do
       def invoke_command( command, *args )
-        envs = Kintone_Cli::Utils.load_kintonefile
-        $env = Kintone_Cli::Utils.get_env( envs, options )
+        if 'init' != command.name
+          envs = Kintone_Cli::Utils.load_kintonefile
+          $env = Kintone_Cli::Utils.get_env( envs, options )
+
+          unless $env['user'] && $env['password'] && $env['subdomain']
+            $stderr.puts "Your account information is not defined."
+            exit 1
+          end
+        end
         super
       end
     end

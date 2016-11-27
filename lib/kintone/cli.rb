@@ -51,8 +51,7 @@ module Kintone_Cli
           $env = Kintone_Cli::Utils.get_env( envs, options )
 
           unless $env['user'] && $env['password'] && $env['subdomain']
-            $stderr.puts "Your account information is not defined. Please run `kt init`"
-            exit 1
+            Kintone_Cli::Utils.error( "Your account information is not defined. Please run `kt init`" )
           end
         end
         super

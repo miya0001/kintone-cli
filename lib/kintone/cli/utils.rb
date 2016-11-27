@@ -35,7 +35,8 @@ module Kintone_Cli
       end # end success
 
       def error( message )
-        puts "Error: ".colorize( :red ) + message
+        $stderr.puts "Error: ".colorize( :red ) + message
+        exit 1
       end # end success
 
       def kintone_record_to_array( records )
@@ -84,11 +85,9 @@ module Kintone_Cli
           )
           return JSON.parse( response )
         rescue RestClient::ExceptionWithResponse => e
-          $stderr.puts e.message
-          exit 1
+          error( e.message )
         rescue => e
-          $stderr.puts e.message
-          exit 1
+          error( e.message )
         end
       end # end send
 

@@ -13,7 +13,7 @@ describe KCLI do
     expect( output ).to eq "\e[0;32;49mSuccess: \e[0mHello\n"
   end
 
-  it "Kintone style arrat to be key/value style array" do
+  it "Kintone style array to be key/value style array" do
     json = <<-'JSON'
     [
       {

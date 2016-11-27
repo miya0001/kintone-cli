@@ -5,7 +5,7 @@ module Kintone_Cli
 
   class Record < Thor
     class_option :app, :desc => "The applicatin ID.", :type => :numeric, :required => true
-    Kintone_Cli::Utils.shared_options.each do |option, args|
+    Kintone_Cli::Utils.shared_options.each do | option, args |
       class_option option, args
     end
 

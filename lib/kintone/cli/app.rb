@@ -4,7 +4,7 @@
 module Kintone_Cli
 
   class App < Thor
-    Kintone_Cli::Utils.shared_options.each do |option, args|
+    Kintone_Cli::Utils.shared_options.each do | option, args |
       class_option option, args
     end
 

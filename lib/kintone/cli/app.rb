@@ -2,8 +2,8 @@
 # vim: ft=ruby expandtab shiftwidth=2 tabstop=2
 
 module KCLI
-
   class App < Thor
+
     KCLI.shared_options.each do | option, args |
       class_option option, args
     end

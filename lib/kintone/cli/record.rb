@@ -2,8 +2,8 @@
 # vim: ft=ruby expandtab shiftwidth=2 tabstop=2
 
 module KCLI
-
   class Record < Thor
+
     class_option :app, :desc => "The applicatin ID.", :type => :numeric, :required => true
     KCLI.shared_options.each do | option, args |
       class_option option, args
@@ -74,5 +74,6 @@ module KCLI
       res = KCLI.send( "/records.json", :delete, params )
       puts JSON.generate( res )
     end # end get
+
   end
 end

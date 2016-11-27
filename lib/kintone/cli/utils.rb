@@ -3,6 +3,7 @@
 
 module KCLI
   class << self
+
     def shared_options
       {
         environment: {
@@ -27,7 +28,7 @@ module KCLI
           desc: 'The password of the Kintone.'
         }
       }
-    end
+    end # end shared_options
 
     def parse_args_for_delete_record( ids, options )
       deletes = []
@@ -54,7 +55,7 @@ module KCLI
         end
       end
       return deletes
-    end
+    end # end parse_args_for_delete_record
 
     def success( message )
       puts "Success: ".colorize( :green ) + message
@@ -63,7 +64,7 @@ module KCLI
     def error( message )
       $stderr.puts "Error: ".colorize( :red ) + message
       exit 1
-    end # end success
+    end # end error
 
     def kintone_record_to_array( records )
       items = []
@@ -175,7 +176,7 @@ module KCLI
       else
         return {}
       end
-    end
+    end # end load_kintonefile
 
   end # end self
 end # end Pushbullet_CLI

@@ -12,6 +12,7 @@ module KCLI
     desc "record get", "Get a list of records."
     method_option :id, :desc => "The record ID."
     method_option :format, :desc => "Out put format.", :enum => [ "yaml", "json" ]
+    method_option :query, :desc => "Path to the JSON file that filters the data from the Kintone."
     def get
       if options[:id]
         url = "/record.json"
@@ -20,7 +21,13 @@ module KCLI
         records = [ res["record"] ]
       else
         url = "/records.json"
-        params = { "app" => options[:app] }
+        if options[:query]
+          json = KCLI.readfile( options[:query] )
+          params = KCLI.json_decode( json )
+          params["app"] = options[:app]
+        else
+          params = { "app" => options[:app] }
+        end
         res = KCLI.send( url, :get, params )
         records = res["records"]
       end
@@ -34,7 +41,7 @@ module KCLI
 
     desc "record post", "Post a list of records."
     def post( yaml )
-      items = YAML.load_file( yaml )
+      items = KCLI.yaml_decode( KCLI.readfile( yaml ) )
       records = KCLI.parse_yaml( items )
       posts = []
       records.each do | item |
@@ -50,14 +57,12 @@ module KCLI
 
     desc "record put", "Update a list of records."
     def put( yaml )
-      items = YAML.load_file( yaml )
+      items = KCLI.yaml_decode( KCLI.readfile( yaml ) )
       update = KCLI.parse_yaml( items )
-
       params = {
         "app" => options[:app],
         "records" => update
       }
-
       res = KCLI.send( "/records.json", :put, params )
       puts JSON.generate( res["records"] )
     end # end get

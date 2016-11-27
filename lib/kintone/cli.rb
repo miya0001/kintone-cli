@@ -17,6 +17,7 @@ require "kintone/cli/record"
 
 module KCLI
   class Command < Thor
+
     KCLI.shared_options.each do | option, args |
       class_option option, args
     end
@@ -30,10 +31,12 @@ module KCLI
     desc "init", "Generates a new Kintonefile."
     def init
       template = ERB.new File.read( File.join(
-        File.dirname(__FILE__),
-        '../templates/Kintonefile'
+        File.dirname( __FILE__ ),
+        "cli",
+        "templates",
+        "Kintonefile"
       ) )
-      File.open( "./Kintonefile", "w" ) do | file |
+      File.open( KCLI.curdir( "Kintonefile" ), "w" ) do | file |
         file.puts template.result( binding )
       end
       KCLI.success( "Create a Kintonefile." )

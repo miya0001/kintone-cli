@@ -4,8 +4,17 @@
 require 'spec_helper'
 require 'shellwords'
 require 'kintone/cli'
+require 'shell'
 
 describe KCLI do
+
+  it "tests for curdir()" do
+    res = KCLI.curdir( 'a', 'b' )
+    sh = Shell.new
+    expected = File.join( sh.cwd, 'a', 'b' )
+    expect( res ).to eq expected
+  end
+
   it "parsing args for delete records with yaml" do
     ids = <<-'YAML'
 - $id: 1

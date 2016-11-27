@@ -4,6 +4,36 @@
 module KCLI
   class << self
 
+    def json_decode( json )
+      begin
+        return JSON.parse( json )
+      rescue => e
+        KCLI.error( "Invalid JSON format." )
+      end
+    end
+
+    def yaml_decode( yaml )
+      begin
+        return YAML.load( yaml )
+      rescue => e
+        KCLI.error( "Invalid YAML format." )
+      end
+    end
+
+    def readfile( file )
+      realpath = File.expand_path( file )
+      if File.exists?( realpath )
+        return File.read( realpath, :encoding => Encoding::UTF_8 )
+      else
+        KCLI.error( "\"#{file}\" doesn't exist." )
+      end
+    end
+
+    def curdir( *args )
+      sh = Shell.new
+      return File.join( sh.cwd, args )
+    end
+
     def shared_options
       {
         environment: {
@@ -36,9 +66,9 @@ module KCLI
         deletes = ids
       else
         if "json" == options[:format]
-          items = JSON.parse( ids[0] )
+          items = json_decode( ids[0] )
         elsif "yaml" == options[:format]
-          items = YAML.load( ids[0] )
+          items = yaml_decode( ids[0] )
         end
         items.each do | item |
           if item.is_a?( Numeric ) || ( item.is_a?( String ) && item.to_i > 0 )
@@ -110,7 +140,7 @@ module KCLI
           :payload => JSON.generate( params ),
           :headers => http_headers
         )
-        return JSON.parse( response )
+        return json_decode( response )
       rescue RestClient::ExceptionWithResponse => e
         error( e.message )
       rescue => e
@@ -172,7 +202,7 @@ module KCLI
       sh = Shell.new
       kintonefile = File.join( sh.cwd, "Kintonefile" )
       if File.exist?( kintonefile )
-        return YAML.load_file( kintonefile )
+        return yaml_decode( readfile( kintonefile ) )
       else
         return {}
       end

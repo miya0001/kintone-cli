@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["miya0001"]
   spec.email         = ["miya@wpist.me"]
 
-  spec.summary       = %q{Use Pushbullet from cli.}
-  spec.description   = %q{Use Pushbullet from cli.}
+  spec.summary       = %q{Manage Kintone from CLI.}
+  spec.description   = %q{Manage Kintone from CLI.}
   spec.homepage      = "https://github.com/miya0001/kintone-cli"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or

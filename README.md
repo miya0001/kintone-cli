@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/miya0001/kintone-cli.svg?branch=master)](https://travis-ci.org/miya0001/kintone-cli)
 
+Manage Kintone from command line interface.
+
 This project is in progress...
 
 ## Requires

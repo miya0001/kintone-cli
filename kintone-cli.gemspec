@@ -5,7 +5,7 @@ require 'kintone/cli/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "kintone-cli"
-  spec.version       = Kintone_Cli::VERSION
+  spec.version       = kcli::VERSION
   spec.authors       = ["miya0001"]
   spec.email         = ["miya@wpist.me"]
 

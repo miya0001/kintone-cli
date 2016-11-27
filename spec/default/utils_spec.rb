@@ -5,7 +5,7 @@ require 'spec_helper'
 require 'shellwords'
 require 'kintone/cli'
 
-describe Kintone_Cli::Utils do
+describe kcli do
 
   it "Kintone style arrat to be key/value style array" do
     json = <<-'JSON'
@@ -66,7 +66,7 @@ describe Kintone_Cli::Utils do
     ]
     ARRAY
 
-    result = Kintone_Cli::Utils::kintone_record_to_array( JSON.parse( json ) )
+    result = kcli.kintone_record_to_array( JSON.parse( json ) )
     expect( result.count ).to be > 0
     expect( result ).to eq( JSON.parse( array ) )
   end
@@ -145,13 +145,13 @@ describe Kintone_Cli::Utils do
     JSON
 
     items = YAML.load( yaml )
-    result = Kintone_Cli::Utils::parse_yaml( items )
+    result = kcli.parse_yaml( items )
     expect( result ).to eq JSON.parse( json )
   end
 
   it "Yaml array will be converted to kintone style array" do
     items = YAML.load_file( "spec/data/post.yml" )
-    result = Kintone_Cli::Utils::parse_yaml( items )
+    result = kcli.parse_yaml( items )
     expect( result.count ).to be > 0
     json = <<-'JSON'
     [
@@ -206,7 +206,7 @@ describe Kintone_Cli::Utils do
       "subdomain" => "staging-subdomain"
     }
 
-    result = Kintone_Cli::Utils::http_headers
+    result = kcli.http_headers
     auth = Base64.strict_decode64( result["X-Cybozu-Authorization"] )
     expect( auth ).to eq $env["user"] + ":" + $env["password"]
   end
@@ -229,7 +229,7 @@ describe Kintone_Cli::Utils do
       "environment" => "staging"
     }
 
-    result = Kintone_Cli::Utils::get_env( envs, options )
+    result = kcli.get_env( envs, options )
     expect( result ).to eq "user" => "staging-user",
         "password" => "staging-pass", "subdomain" => "staging-subdomain"
   end
@@ -255,7 +255,7 @@ describe Kintone_Cli::Utils do
       "subdomain" => "subdomain"
     }
 
-    result = Kintone_Cli::Utils::get_env( envs, options )
+    result = kcli.get_env( envs, options )
     expect( result ).to eq "user" => "user",
         "password" => "pass", "subdomain" => "subdomain"
   end
@@ -279,7 +279,7 @@ describe Kintone_Cli::Utils do
       "user" => "user"
     }
 
-    result = Kintone_Cli::Utils::get_env( envs, options )
+    result = kcli.get_env( envs, options )
     expect( result['user'] ).to eq "user"
     expect( result['password'] ).to eq "staging-pass"
     expect( result['subdomain'] ).to eq "staging-subdomain"

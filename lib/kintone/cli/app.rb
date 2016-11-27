@@ -1,10 +1,10 @@
 # encoding: utf-8
 # vim: ft=ruby expandtab shiftwidth=2 tabstop=2
 
-module Kintone_Cli
+module kcli
 
   class App < Thor
-    Kintone_Cli::Utils.shared_options.each do | option, args |
+    kcli.shared_options.each do | option, args |
       class_option option, args
     end
 

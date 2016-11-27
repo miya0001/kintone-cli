@@ -5,11 +5,11 @@ require 'spec_helper'
 require 'kintone/cli'
 require "json"
 
-describe Kintone_Cli::Command do
+describe kcli::Command do
 
   it "Get the record from kintone record api" do
     output = capture(:stdout) {
-      Kintone_Cli::Command.start( [
+      kcli::Command.start( [
         "record",
         "get",
         "--app=5",
@@ -24,7 +24,7 @@ describe Kintone_Cli::Command do
   it "Get the record from kintone record api with incorrect params" do
     expect{
       capture(:stderr) {
-        Kintone_Cli::Command.start( [
+        kcli::Command.start( [
           "record",
           "get",
           "--app=5",
@@ -38,7 +38,7 @@ describe Kintone_Cli::Command do
 
   it "Get the record from kintone record api with no environment option" do
     output = capture(:stdout) {
-      Kintone_Cli::Command.start( [
+      kcli::Command.start( [
         "record",
         "get",
         "--app=5"
@@ -49,7 +49,7 @@ describe Kintone_Cli::Command do
 
   it "Get the record from kintone record api with Kintonefile" do
     output = capture(:stdout) {
-      Kintone_Cli::Command.start( [
+      kcli::Command.start( [
         "record",
         "get",
         "--app=5",
@@ -62,7 +62,7 @@ describe Kintone_Cli::Command do
   it "Get the record from kintone record api with incorrect user" do
     expect{
       capture(:stderr) {
-        Kintone_Cli::Command.start( [
+        kcli::Command.start( [
           "record",
           "get",
           "--app=5",
@@ -74,7 +74,7 @@ describe Kintone_Cli::Command do
 
   it "Post two new records then update and delete them" do
     posted = capture(:stdout) {
-      Kintone_Cli::Command.start( [
+      kcli::Command.start( [
         "record",
         "post",
         "./spec/data/post.yml",
@@ -102,7 +102,7 @@ describe Kintone_Cli::Command do
     end
 
     updated = capture(:stdout) {
-      Kintone_Cli::Command.start( [
+      kcli::Command.start( [
         "record",
         "put",
         "./spec/data/update.yml",
@@ -114,7 +114,7 @@ describe Kintone_Cli::Command do
     expect( JSON.parse( updated ).count ).to eq 2
 
     output = capture(:stdout) {
-      Kintone_Cli::Command.start( [
+      kcli::Command.start( [
         "record",
         "delete",
         "--app=5",

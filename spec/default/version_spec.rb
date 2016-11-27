@@ -5,15 +5,15 @@ require 'spec_helper'
 require 'shellwords'
 require 'kintone/cli'
 
-describe Kintone_Cli::Command do
+describe kcli::Command do
 
   it "Get the record from kintone record api" do
     output = capture(:stdout) {
-      Kintone_Cli::Command.start( [
+      kcli::Command.start( [
         "version"
       ] )
     }
-    expect( output ).to eq Kintone_Cli::VERSION + "\n"
+    expect( output ).to eq kcli::VERSION + "\n"
   end
 
 end

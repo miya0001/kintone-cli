@@ -1,11 +1,11 @@
 # encoding: utf-8
 # vim: ft=ruby expandtab shiftwidth=2 tabstop=2
 
-module Kintone_Cli
+module kcli
 
   class Record < Thor
     class_option :app, :desc => "The applicatin ID.", :type => :numeric, :required => true
-    Kintone_Cli::Utils.shared_options.each do | option, args |
+    kcli.shared_options.each do | option, args |
       class_option option, args
     end
 
@@ -16,15 +16,15 @@ module Kintone_Cli
       if options[:id]
         url = "/record.json"
         params = { "app" => options[:app], "id" => options[:id] }
-        res = Kintone_Cli::Utils.send( url, :get, params )
+        res = kcli.send( url, :get, params )
         records = [ res["record"] ]
       else
         url = "/records.json"
         params = { "app" => options[:app] }
-        res = Kintone_Cli::Utils.send( url, :get, params )
+        res = kcli.send( url, :get, params )
         records = res["records"]
       end
-      records = Kintone_Cli::Utils.kintone_record_to_array( records )
+      records = kcli.kintone_record_to_array( records )
       if "yaml" == options[:format]
         puts YAML.dump( records )
       else
@@ -35,7 +35,7 @@ module Kintone_Cli
     desc "record post", "Post a list of records."
     def post( yaml )
       items = YAML.load_file( yaml )
-      records = Kintone_Cli::Utils.parse_yaml( items )
+      records = kcli.parse_yaml( items )
       posts = []
       records.each do | item |
         posts.push( item["record"] )
@@ -44,21 +44,21 @@ module Kintone_Cli
         "app" => options[:app],
         "records" => posts
       }
-      res = Kintone_Cli::Utils.send( "/records.json", :post, params )
+      res = kcli.send( "/records.json", :post, params )
       puts JSON.generate( res["ids"] )
     end # end get
 
     desc "record put", "Update a list of records."
     def put( yaml )
       items = YAML.load_file( yaml )
-      update = Kintone_Cli::Utils.parse_yaml( items )
+      update = kcli.parse_yaml( items )
 
       params = {
         "app" => options[:app],
         "records" => update
       }
 
-      res = Kintone_Cli::Utils.send( "/records.json", :put, params )
+      res = kcli.send( "/records.json", :put, params )
       puts JSON.generate( res["records"] )
     end # end get
 
@@ -69,7 +69,7 @@ module Kintone_Cli
         "app" => options[:app],
         "ids" => JSON.parse( options[:ids] )
       }
-      res = Kintone_Cli::Utils.send( "/records.json", :delete, params )
+      res = kcli.send( "/records.json", :delete, params )
       puts JSON.generate( res )
     end # end get
   end

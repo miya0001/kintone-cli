@@ -1,0 +1,5 @@
+{
+    "app": 8,
+    "query": "limit 7 offset 0",
+    "fields": ["$id", "日付"]
+}

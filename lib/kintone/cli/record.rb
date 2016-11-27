@@ -11,7 +11,7 @@ module KCLI
 
     desc "record get", "Get a list of records."
     method_option :id, :desc => "The record ID."
-    method_option :format, :desc => "Out put format.", :enum => [ "yaml", "json" ]
+    method_option :format, :desc => "Output format.", :enum => [ "yaml", "json" ]
     method_option :query, :desc => "Path to the JSON file that filters the data from the Kintone."
     def get
       if options[:id]
@@ -40,6 +40,7 @@ module KCLI
     end # end get
 
     desc "record post", "Post a list of records."
+    method_option :format, :desc => "Input format.", :enum => [ "yaml", "json" ]
     def post( yaml )
       items = KCLI.yaml_decode( KCLI.readfile( yaml ) )
       records = KCLI.parse_yaml( items )
@@ -56,6 +57,7 @@ module KCLI
     end # end get
 
     desc "record put", "Update a list of records."
+    method_option :format, :desc => "Input format.", :enum => [ "yaml", "json" ]
     def put( yaml )
       items = KCLI.yaml_decode( KCLI.readfile( yaml ) )
       update = KCLI.parse_yaml( items )

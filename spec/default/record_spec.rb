@@ -7,6 +7,31 @@ require "json"
 
 describe KCLI::Command do
 
+  it "Get the record from kintone record api with incorrect json" do
+    expect{
+      capture( :stderr ) {
+        KCLI::Command.start( [
+        "record",
+        "get",
+        "--app=5",
+        "--query=./spec/data/post.yml"
+        ] )
+      }
+    }.to raise_error( SystemExit )
+  end
+
+  it "Get the record from kintone record api with query" do
+    output = capture( :stdout ) {
+      KCLI::Command.start( [
+        "record",
+        "get",
+        "--app=5",
+        "--query=./spec/data/query.json"
+      ] )
+    }
+    expect( JSON.parse( output ).count ).to eq 7
+  end
+
   it "Get the record from kintone record api" do
     output = capture( :stdout ) {
       KCLI::Command.start( [

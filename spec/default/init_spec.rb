@@ -5,11 +5,11 @@ require 'spec_helper'
 require 'kintone/cli'
 require "json"
 
-describe kcli::Command do
+describe KCLI::Command do
 
   it "Get the record from kintone record api" do
     output = capture(:stdout) {
-      kcli::Command.start( [
+      KCLI::Command.start( [
         "init",
         "--environment=default",
         "--subdomain=#{ENV['KINTONE_SUBDOMAIN']}",
@@ -22,7 +22,7 @@ describe kcli::Command do
 
   it "Get the record from kintone record api" do
     output = capture(:stdout) {
-      kcli::Command.start( [
+      KCLI::Command.start( [
         "init"
       ] )
     }

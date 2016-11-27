@@ -5,11 +5,11 @@ require 'spec_helper'
 require 'kintone/cli'
 require "json"
 
-describe kcli::Command do
+describe KCLI::Command do
 
   it "Get the record from kintone record api" do
-    output = capture(:stdout) {
-      kcli::Command.start( [
+    output = capture( :stdout ) {
+      KCLI::Command.start( [
         "record",
         "get",
         "--app=5",
@@ -23,8 +23,8 @@ describe kcli::Command do
 
   it "Get the record from kintone record api with incorrect params" do
     expect{
-      capture(:stderr) {
-        kcli::Command.start( [
+      capture( :stderr ) {
+        KCLI::Command.start( [
           "record",
           "get",
           "--app=5",
@@ -37,8 +37,8 @@ describe kcli::Command do
   end
 
   it "Get the record from kintone record api with no environment option" do
-    output = capture(:stdout) {
-      kcli::Command.start( [
+    output = capture( :stdout ) {
+      KCLI::Command.start( [
         "record",
         "get",
         "--app=5"
@@ -48,8 +48,8 @@ describe kcli::Command do
   end
 
   it "Get the record from kintone record api with Kintonefile" do
-    output = capture(:stdout) {
-      kcli::Command.start( [
+    output = capture( :stdout ) {
+      KCLI::Command.start( [
         "record",
         "get",
         "--app=5",
@@ -61,8 +61,8 @@ describe kcli::Command do
 
   it "Get the record from kintone record api with incorrect user" do
     expect{
-      capture(:stderr) {
-        kcli::Command.start( [
+      capture( :stderr ) {
+        KCLI::Command.start( [
           "record",
           "get",
           "--app=5",
@@ -73,8 +73,8 @@ describe kcli::Command do
   end
 
   it "Post two new records then update and delete them" do
-    posted = capture(:stdout) {
-      kcli::Command.start( [
+    posted = capture( :stdout ) {
+      KCLI::Command.start( [
         "record",
         "post",
         "./spec/data/post.yml",
@@ -101,8 +101,8 @@ describe kcli::Command do
       file.puts YAML.dump( update )
     end
 
-    updated = capture(:stdout) {
-      kcli::Command.start( [
+    updated = capture( :stdout ) {
+      KCLI::Command.start( [
         "record",
         "put",
         "./spec/data/update.yml",
@@ -113,8 +113,8 @@ describe kcli::Command do
 
     expect( JSON.parse( updated ).count ).to eq 2
 
-    output = capture(:stdout) {
-      kcli::Command.start( [
+    output = capture( :stdout ) {
+      KCLI::Command.start( [
         "record",
         "delete",
         "--app=5",

@@ -2,4 +2,4 @@
 
 require "kintone/cli"
 
-kcli::Command.start
+KCLI::Command.start

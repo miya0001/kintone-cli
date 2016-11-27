@@ -12,13 +12,14 @@ require "colorize"
 
 require "kintone/cli/version"
 require "kintone/cli/utils"
+require "kintone/cli/array"
 require "kintone/cli/app"
 require "kintone/cli/record"
 
 module KCLI
   class Command < Thor
 
-    KCLI.shared_options.each do | option, args |
+    KCLI::shared_options.each do | option, args |
       class_option option, args
     end
 
@@ -36,10 +37,10 @@ module KCLI
         "templates",
         "Kintonefile"
       ) )
-      File.open( KCLI.curdir( "Kintonefile" ), "w" ) do | file |
+      File.open( KCLI::curdir( "Kintonefile" ), "w" ) do | file |
         file.puts template.result( binding )
       end
-      KCLI.success( "Create a Kintonefile." )
+      KCLI::success( "Create a Kintonefile." )
     end
 
     desc "version", "Displays the version of the Kintone CLI."
@@ -50,11 +51,11 @@ module KCLI
     no_commands do
       def invoke_command( command, *args )
         if 'init' != command.name && 'help' != command.name
-          envs = KCLI.load_kintonefile
-          $env = KCLI.get_env( envs, options )
+          envs = KCLI::load_kintonefile
+          $env = KCLI::get_env( envs, options )
 
           unless $env['user'] && $env['password'] && $env['subdomain']
-            KCLI.error( "Your account information is not defined. Please run `kt init`" )
+            KCLI::error( "Your account information is not defined. Please run `kt init`" )
           end
         end
         super

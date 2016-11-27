@@ -8,7 +8,7 @@ module KCLI
       begin
         return JSON.parse( json )
       rescue => e
-        KCLI.error( "Invalid JSON format." )
+        KCLI::error( "Invalid JSON format." )
       end
     end
 
@@ -16,7 +16,7 @@ module KCLI
       begin
         return YAML.load( yaml )
       rescue => e
-        KCLI.error( "Invalid YAML format." )
+        KCLI::error( "Invalid YAML format." )
       end
     end
 
@@ -25,7 +25,7 @@ module KCLI
       if File.exists?( realpath )
         return File.read( realpath, :encoding => Encoding::UTF_8 )
       else
-        KCLI.error( "\"#{file}\" doesn't exist." )
+        KCLI::error( "\"#{file}\" doesn't exist." )
       end
     end
 
@@ -79,7 +79,7 @@ module KCLI
             elsif item['$id']
               deletes.push( item['$id'] )
             else
-              KCLI.error( "The argument looks incorrect format." );
+              KCLI::error( "The argument looks incorrect format." );
             end
           end
         end
@@ -95,39 +95,6 @@ module KCLI
       $stderr.puts "Error: ".colorize( :red ) + message
       exit 1
     end # end error
-
-    def kintone_record_to_array( records )
-      items = []
-      records.each do | record |
-        item = {}
-        record.each do | key, value |
-          if value["value"].is_a?( Array )
-            item[key] = parse_sub_table( value["value"] )
-          else
-            item[key] = value["value"]
-          end
-        end
-        items.push( item )
-      end
-
-      return items
-    end
-
-    def parse_sub_table( items )
-      unless items[0] && items[0]["id"] && items[0]["value"]
-        return items
-      end
-      records = []
-      items.each do | item |
-        record = {}
-        record["id"] = item["id"]
-        item["value"].each do | key, val |
-          record[ key ] = val["value"]
-        end
-        records.push( record )
-      end
-      return records
-    end
 
     def parse_yaml( items )
       kintone_array = []

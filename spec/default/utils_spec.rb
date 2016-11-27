@@ -9,7 +9,7 @@ require 'shell'
 describe KCLI do
 
   it "tests for curdir()" do
-    res = KCLI.curdir( 'a', 'b' )
+    res = KCLI::curdir( 'a', 'b' )
     sh = Shell.new
     expected = File.join( sh.cwd, 'a', 'b' )
     expect( res ).to eq expected
@@ -26,7 +26,7 @@ describe KCLI do
     YAML
     options = {}
     options[:format] = "yaml"
-    res = KCLI.parse_args_for_delete_record( [ ids ], options )
+    res = KCLI::parse_args_for_delete_record( [ ids ], options )
     expect( res ).to eq [ 1, 2, 3 ]
   end
 
@@ -41,7 +41,7 @@ describe KCLI do
     YAML
     options = {}
     options[:format] = "yaml"
-    res = KCLI.parse_args_for_delete_record( [ ids ], options )
+    res = KCLI::parse_args_for_delete_record( [ ids ], options )
     expect( res ).to eq [ 1, 2, 3 ]
   end
 
@@ -49,7 +49,7 @@ describe KCLI do
     ids = YAML.dump( [ 1, 2, 3 ] )
     options = {}
     options[:format] = "yaml"
-    res = KCLI.parse_args_for_delete_record( [ ids ], options )
+    res = KCLI::parse_args_for_delete_record( [ ids ], options )
     expect( res ).to eq [ 1, 2, 3 ]
   end
 
@@ -59,7 +59,7 @@ describe KCLI do
     ] )
     options = {}
     options[:format] = "json"
-    res = KCLI.parse_args_for_delete_record( [ ids ], options )
+    res = KCLI::parse_args_for_delete_record( [ ids ], options )
     expect( res ).to eq [ 1, 2, 3 ]
   end
 
@@ -67,7 +67,7 @@ describe KCLI do
     ids = JSON.generate( [ { id: 1 }, { id: 2 }, { id: 3 } ] )
     options = {}
     options[:format] = "json"
-    res = KCLI.parse_args_for_delete_record( [ ids ], options )
+    res = KCLI::parse_args_for_delete_record( [ ids ], options )
     expect( res ).to eq [ 1, 2, 3 ]
   end
 
@@ -75,7 +75,7 @@ describe KCLI do
     ids = JSON.generate( [ 1, 2, 3 ] )
     options = {}
     options[:format] = "json"
-    res = KCLI.parse_args_for_delete_record( [ ids ], options )
+    res = KCLI::parse_args_for_delete_record( [ ids ], options )
     expect( res ).to eq [ 1, 2, 3 ]
   end
 
@@ -83,13 +83,13 @@ describe KCLI do
     ids = [ 1, 2, 3 ]
     options = {}
     options[:format] = "array"
-    res = KCLI.parse_args_for_delete_record( ids, options )
+    res = KCLI::parse_args_for_delete_record( ids, options )
     expect( res ).to eq [ 1, 2, 3 ]
   end
 
   it "tests for sccess()" do
     output = capture(:stdout) {
-      KCLI.success( "Hello")
+      KCLI::success( "Hello")
     }
     expect( output ).to eq "\e[0;32;49mSuccess: \e[0mHello\n"
   end
@@ -153,7 +153,7 @@ describe KCLI do
     ]
     ARRAY
 
-    result = KCLI.kintone_record_to_array( JSON.parse( json ) )
+    result = KCLI::Array::to_array( JSON.parse( json ) )
     expect( result.count ).to be > 0
     expect( result ).to eq( JSON.parse( array ) )
   end
@@ -232,13 +232,13 @@ describe KCLI do
     JSON
 
     items = YAML.load( yaml )
-    result = KCLI.parse_yaml( items )
+    result = KCLI::parse_yaml( items )
     expect( result ).to eq JSON.parse( json )
   end
 
   it "Yaml array will be converted to kintone style array" do
     items = YAML.load_file( "spec/data/post.yml" )
-    result = KCLI.parse_yaml( items )
+    result = KCLI::parse_yaml( items )
     expect( result.count ).to be > 0
     json = <<-'JSON'
     [
@@ -293,7 +293,7 @@ describe KCLI do
       "subdomain" => "staging-subdomain"
     }
 
-    result = KCLI.http_headers
+    result = KCLI::http_headers
     auth = Base64.strict_decode64( result["X-Cybozu-Authorization"] )
     expect( auth ).to eq $env["user"] + ":" + $env["password"]
   end
@@ -316,7 +316,7 @@ describe KCLI do
       "environment" => "staging"
     }
 
-    result = KCLI.get_env( envs, options )
+    result = KCLI::get_env( envs, options )
     expect( result ).to eq "user" => "staging-user",
         "password" => "staging-pass", "subdomain" => "staging-subdomain"
   end
@@ -342,7 +342,7 @@ describe KCLI do
       "subdomain" => "subdomain"
     }
 
-    result = KCLI.get_env( envs, options )
+    result = KCLI::get_env( envs, options )
     expect( result ).to eq "user" => "user",
         "password" => "pass", "subdomain" => "subdomain"
   end
@@ -366,7 +366,7 @@ describe KCLI do
       "user" => "user"
     }
 
-    result = KCLI.get_env( envs, options )
+    result = KCLI::get_env( envs, options )
     expect( result['user'] ).to eq "user"
     expect( result['password'] ).to eq "staging-pass"
     expect( result['subdomain'] ).to eq "staging-subdomain"

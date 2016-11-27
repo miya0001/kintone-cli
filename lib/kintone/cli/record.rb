@@ -1,11 +1,11 @@
 # encoding: utf-8
 # vim: ft=ruby expandtab shiftwidth=2 tabstop=2
 
-module kcli
+module KCLI
 
   class Record < Thor
     class_option :app, :desc => "The applicatin ID.", :type => :numeric, :required => true
-    kcli.shared_options.each do | option, args |
+    KCLI.shared_options.each do | option, args |
       class_option option, args
     end
 
@@ -16,15 +16,15 @@ module kcli
       if options[:id]
         url = "/record.json"
         params = { "app" => options[:app], "id" => options[:id] }
-        res = kcli.send( url, :get, params )
+        res = KCLI.send( url, :get, params )
         records = [ res["record"] ]
       else
         url = "/records.json"
         params = { "app" => options[:app] }
-        res = kcli.send( url, :get, params )
+        res = KCLI.send( url, :get, params )
         records = res["records"]
       end
-      records = kcli.kintone_record_to_array( records )
+      records = KCLI.kintone_record_to_array( records )
       if "yaml" == options[:format]
         puts YAML.dump( records )
       else
@@ -35,7 +35,7 @@ module kcli
     desc "record post", "Post a list of records."
     def post( yaml )
       items = YAML.load_file( yaml )
-      records = kcli.parse_yaml( items )
+      records = KCLI.parse_yaml( items )
       posts = []
       records.each do | item |
         posts.push( item["record"] )
@@ -44,21 +44,21 @@ module kcli
         "app" => options[:app],
         "records" => posts
       }
-      res = kcli.send( "/records.json", :post, params )
+      res = KCLI.send( "/records.json", :post, params )
       puts JSON.generate( res["ids"] )
     end # end get
 
     desc "record put", "Update a list of records."
     def put( yaml )
       items = YAML.load_file( yaml )
-      update = kcli.parse_yaml( items )
+      update = KCLI.parse_yaml( items )
 
       params = {
         "app" => options[:app],
         "records" => update
       }
 
-      res = kcli.send( "/records.json", :put, params )
+      res = KCLI.send( "/records.json", :put, params )
       puts JSON.generate( res["records"] )
     end # end get
 
@@ -69,7 +69,7 @@ module kcli
         "app" => options[:app],
         "ids" => JSON.parse( options[:ids] )
       }
-      res = kcli.send( "/records.json", :delete, params )
+      res = KCLI.send( "/records.json", :delete, params )
       puts JSON.generate( res )
     end # end get
   end

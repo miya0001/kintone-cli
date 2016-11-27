@@ -1,10 +1,10 @@
 # encoding: utf-8
 # vim: ft=ruby expandtab shiftwidth=2 tabstop=2
 
-module kcli
+module KCLI
 
   class App < Thor
-    kcli.shared_options.each do | option, args |
+    KCLI.shared_options.each do | option, args |
       class_option option, args
     end
 

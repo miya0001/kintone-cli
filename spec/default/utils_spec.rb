@@ -5,7 +5,13 @@ require 'spec_helper'
 require 'shellwords'
 require 'kintone/cli'
 
-describe kcli do
+describe KCLI do
+  it "tests for sccess()" do
+    output = capture(:stdout) {
+      KCLI.success( "Hello")
+    }
+    expect( output ).to eq "\e[0;32;49mSuccess: \e[0mHello\n"
+  end
 
   it "Kintone style arrat to be key/value style array" do
     json = <<-'JSON'
@@ -66,7 +72,7 @@ describe kcli do
     ]
     ARRAY
 
-    result = kcli.kintone_record_to_array( JSON.parse( json ) )
+    result = KCLI.kintone_record_to_array( JSON.parse( json ) )
     expect( result.count ).to be > 0
     expect( result ).to eq( JSON.parse( array ) )
   end
@@ -145,13 +151,13 @@ describe kcli do
     JSON
 
     items = YAML.load( yaml )
-    result = kcli.parse_yaml( items )
+    result = KCLI.parse_yaml( items )
     expect( result ).to eq JSON.parse( json )
   end
 
   it "Yaml array will be converted to kintone style array" do
     items = YAML.load_file( "spec/data/post.yml" )
-    result = kcli.parse_yaml( items )
+    result = KCLI.parse_yaml( items )
     expect( result.count ).to be > 0
     json = <<-'JSON'
     [
@@ -206,7 +212,7 @@ describe kcli do
       "subdomain" => "staging-subdomain"
     }
 
-    result = kcli.http_headers
+    result = KCLI.http_headers
     auth = Base64.strict_decode64( result["X-Cybozu-Authorization"] )
     expect( auth ).to eq $env["user"] + ":" + $env["password"]
   end
@@ -229,7 +235,7 @@ describe kcli do
       "environment" => "staging"
     }
 
-    result = kcli.get_env( envs, options )
+    result = KCLI.get_env( envs, options )
     expect( result ).to eq "user" => "staging-user",
         "password" => "staging-pass", "subdomain" => "staging-subdomain"
   end
@@ -255,7 +261,7 @@ describe kcli do
       "subdomain" => "subdomain"
     }
 
-    result = kcli.get_env( envs, options )
+    result = KCLI.get_env( envs, options )
     expect( result ).to eq "user" => "user",
         "password" => "pass", "subdomain" => "subdomain"
   end
@@ -279,7 +285,7 @@ describe kcli do
       "user" => "user"
     }
 
-    result = kcli.get_env( envs, options )
+    result = KCLI.get_env( envs, options )
     expect( result['user'] ).to eq "user"
     expect( result['password'] ).to eq "staging-pass"
     expect( result['subdomain'] ).to eq "staging-subdomain"

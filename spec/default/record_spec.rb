@@ -36,6 +36,17 @@ describe Kintone_Cli::Command do
     }.to raise_error( SystemExit )
   end
 
+  it "Get the record from kintone record api with no environment option" do
+    output = capture(:stdout) {
+      Kintone_Cli::Command.start( [
+        "record",
+        "get",
+        "--app=5"
+      ] )
+    }
+    expect( JSON.parse( output ).count ).to be > 0
+  end
+
   it "Get the record from kintone record api with Kintonefile" do
     output = capture(:stdout) {
       Kintone_Cli::Command.start( [
@@ -129,5 +140,4 @@ staging:
 EOL
     end
   end
-
 end

@@ -1,18 +1,25 @@
 # encoding: utf-8
 # vim: ft=ruby expandtab shiftwidth=2 tabstop=2
 
+require "thor"
+require "erb"
+require "yaml"
+require "shell"
+require "rest-client"
+require "base64"
+require "json"
+require "colorize"
+
 require "kintone/cli/version"
 require "kintone/cli/utils"
 require "kintone/cli/app"
 require "kintone/cli/record"
-require "thor"
 
 module Kintone_Cli
   class Command < Thor
-    class_option :environment, aliases: "-e", type: :string, desc: 'Your environment in the Kintonefile.'
-    class_option :subdomain, aliases: "-s", type: :string, desc: 'The subdomain of the Kintone.'
-    class_option :user, aliases: "-u", type: :string, desc: 'The username of the Kintone.'
-    class_option :password, aliases: "-p", type: :string, desc: 'The password of the Kintone.'
+    Kintone_Cli::Utils.shared_options.each do |option, args|
+      class_option option, args
+    end
 
     desc "app <subcommand>", "Manage apps on the Kintone."
     subcommand "app", App
@@ -22,7 +29,14 @@ module Kintone_Cli
 
     desc "init", "Generates a new Kintonefile."
     def init
-      puts options
+      template = ERB.new File.read( File.join(
+        File.dirname(__FILE__),
+        '../templates/Kintonefile'
+      ) )
+      File.open( "./Kintonefile", "w" ) do | file |
+        file.puts template.result( binding )
+      end
+      Kintone_Cli::Utils.success( "Create a Kintonefile." )
     end
 
     desc "version", "Displays the version of the Kintone CLI."

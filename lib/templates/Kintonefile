@@ -1,7 +1,7 @@
-<% environment %>:
-  subdomain: <% subdomain %>
-  user: <% user %>
-  password: <% password %>
+<%= options.environment %>:
+  subdomain: "<%= options.subdomain %>"
+  user: "<%= options.user %>"
+  password: "<%= options.password %>"
 
 staging:
   subdomain: "subdomain"

@@ -1,11 +1,12 @@
 # encoding: utf-8
 # vim: ft=ruby expandtab shiftwidth=2 tabstop=2
 
-require "thor"
-
 module Kintone_Cli
 
   class App < Thor
+    Kintone_Cli::Utils.shared_options.each do |option, args|
+      class_option option, args
+    end
 
     desc "app list", "Get a list of apps."
     method_option :field, :desc => "Prints the value of a single field for each."

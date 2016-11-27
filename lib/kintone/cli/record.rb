@@ -1,14 +1,13 @@
 # encoding: utf-8
 # vim: ft=ruby expandtab shiftwidth=2 tabstop=2
 
-require "thor"
-require "json"
-require "yaml"
-
 module Kintone_Cli
 
   class Record < Thor
     class_option :app, :desc => "The applicatin ID.", :type => :numeric, :required => true
+    Kintone_Cli::Utils.shared_options.each do |option, args|
+      class_option option, args
+    end
 
     desc "record get", "Get a list of records."
     method_option :id, :desc => "The record ID."

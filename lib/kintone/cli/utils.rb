@@ -1,24 +1,42 @@
 # encoding: utf-8
 # vim: ft=ruby expandtab shiftwidth=2 tabstop=2
 
-require "yaml"
-require "shell"
-require "rest-client"
-require "base64"
-require "json"
-
 module Kintone_Cli
   class Utils
     class << self
+      def shared_options
+        {
+          environment: {
+            aliases: "-e",
+            type: :string,
+            desc: 'Your environment in the Kintonefile.',
+            default: "default"
+          },
+          subdomain: {
+            aliases: "-s",
+            type: :string,
+            desc: 'The subdomain of the Kintone.'
+          },
+          user: {
+            aliases: "-u",
+            type: :string,
+            desc: 'The username of the Kintone.'
+          },
+          password: {
+            aliases: "-p",
+            type: :string,
+            desc: 'The password of the Kintone.'
+          }
+        }
+      end
 
-      def print( options )
-        if "json" == options[:format]
-          puts JSON.generate( options[:rows] )
-        else
-          table = options[:rows].map.with_index{ | row | parse_row( options[:cols], row ) }
-          Utils::print_table( options[:cols], table )
-        end
-      end # end print
+      def success( message )
+        puts "Success: ".colorize( :green ) + message
+      end # end success
+
+      def error( message )
+        puts "Error: ".colorize( :red ) + message
+      end # end success
 
       def kintone_record_to_array( records )
         items = []

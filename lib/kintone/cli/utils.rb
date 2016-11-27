@@ -101,12 +101,32 @@ module KCLI
       records.each do | record |
         item = {}
         record.each do | key, value |
-          item[key] = value["value"]
+          if value["value"].is_a?( Array )
+            item[key] = parse_sub_table( value["value"] )
+          else
+            item[key] = value["value"]
+          end
         end
         items.push( item )
       end
 
       return items
+    end
+
+    def parse_sub_table( items )
+      unless items[0] && items[0]["id"] && items[0]["value"]
+        return items
+      end
+      records = []
+      items.each do | item |
+        record = {}
+        record["id"] = item["id"]
+        item["value"].each do | key, val |
+          record[ key ] = val["value"]
+        end
+        records.push( record )
+      end
+      return records
     end
 
     def parse_yaml( items )

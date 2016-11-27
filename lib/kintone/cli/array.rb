@@ -13,7 +13,7 @@ module KCLI
         records.each do | record |
           item = {}
           record.each do | key, value |
-            if value["value"].is_a?( Array )
+            if "SUBTABLE" == value["type"]
               item[key] = sub_table_to_array( value["value"] )
             else
               item[key] = value["value"]
@@ -21,14 +21,10 @@ module KCLI
           end
           items.push( item )
         end
-
         return items
       end
 
       def sub_table_to_array( items )
-        unless items[0] && items[0]["id"] && items[0]["value"]
-          return items
-        end
         records = []
         items.each do | item |
           record = {}

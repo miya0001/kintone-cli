@@ -24,6 +24,7 @@ describe KCLI do
 - $id: 3
   name: Nancy
     YAML
+
     options = {}
     options[:format] = "yaml"
     res = KCLI::parse_args_for_delete_record( [ ids ], options )
@@ -39,6 +40,7 @@ describe KCLI do
 - id: 3
   name: Nancy
     YAML
+
     options = {}
     options[:format] = "yaml"
     res = KCLI::parse_args_for_delete_record( [ ids ], options )
@@ -92,70 +94,6 @@ describe KCLI do
       KCLI::success( "Hello")
     }
     expect( output ).to eq "\e[0;32;49mSuccess: \e[0mHello\n"
-  end
-
-  it "Kintone style array to be key/value style array" do
-    json = <<-'JSON'
-    [
-      {
-        "ラジオボタン": {
-          "value": "達成"
-        },
-        "ドロップダウン": {
-          "value": "営業"
-        },
-        "文字列__複数行__0": {
-          "value": "1行のデータのテスト"
-        },
-        "文字列__複数行_": {
-          "value": "メール作成"
-        },
-        "日付": {
-          "value": "2016-11-27"
-        }
-      },
-      {
-        "ラジオボタン": {
-          "value": "達成"
-        },
-        "ドロップダウン": {
-          "value": "営業"
-        },
-        "文字列__複数行__0": {
-          "value": "複数行のテスト\nこんにちは！\nおでんのメニュー"
-        },
-        "文字列__複数行_": {
-          "value": "・たまご\n・だいこん\n・牛すじ"
-        },
-        "日付": {
-          "value": "2016-11-27"
-        }
-      }
-    ]
-    JSON
-
-    array = <<-'ARRAY'
-    [
-      {
-        "ラジオボタン": "達成",
-        "ドロップダウン": "営業",
-        "文字列__複数行__0": "1行のデータのテスト",
-        "文字列__複数行_": "メール作成",
-        "日付": "2016-11-27"
-      },
-      {
-        "ラジオボタン": "達成",
-        "ドロップダウン": "営業",
-        "文字列__複数行__0": "複数行のテスト\nこんにちは！\nおでんのメニュー",
-        "文字列__複数行_": "・たまご\n・だいこん\n・牛すじ",
-        "日付": "2016-11-27"
-      }
-    ]
-    ARRAY
-
-    result = KCLI::Array::to_array( JSON.parse( json ) )
-    expect( result.count ).to be > 0
-    expect( result ).to eq( JSON.parse( array ) )
   end
 
   it "Yaml array will be converted to kintone style array" do

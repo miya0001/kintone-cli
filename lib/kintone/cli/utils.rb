@@ -29,6 +29,33 @@ module KCLI
       }
     end
 
+    def parse_args_for_delete_record( ids, options )
+      deletes = []
+      if "array" == options[:format]
+        deletes = ids
+      else
+        if "json" == options[:format]
+          items = JSON.parse( ids[0] )
+        elsif "yaml" == options[:format]
+          items = YAML.load( ids[0] )
+        end
+        items.each do | item |
+          if item.is_a?( Numeric ) || ( item.is_a?( String ) && item.to_i > 0 )
+            deletes.push( item )
+          else
+            if item['id']
+              deletes.push( item['id'] )
+            elsif item['$id']
+              deletes.push( item['$id'] )
+            else
+              KCLI.error( "The argument looks incorrect format." );
+            end
+          end
+        end
+      end
+      return deletes
+    end
+
     def success( message )
       puts "Success: ".colorize( :green ) + message
     end # end success

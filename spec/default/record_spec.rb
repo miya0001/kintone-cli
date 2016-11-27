@@ -117,9 +117,10 @@ describe KCLI::Command do
       KCLI::Command.start( [
         "record",
         "delete",
+        posted,
         "--app=5",
         "--environment=default",
-        "--ids=#{posted}"
+        "--format=json"
       ] )
     }
 

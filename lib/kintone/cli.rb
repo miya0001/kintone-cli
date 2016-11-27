@@ -46,7 +46,7 @@ module KCLI
 
     no_commands do
       def invoke_command( command, *args )
-        if 'init' != command.name
+        if 'init' != command.name && 'help' != command.name
           envs = KCLI.load_kintonefile
           $env = KCLI.get_env( envs, options )
 

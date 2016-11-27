@@ -11,7 +11,7 @@ module KCLI
 
     desc "record get", "Get a list of records."
     method_option :id, :desc => "The record ID."
-    method_option :format, :desc => "Out put format. json or yaml."
+    method_option :format, :desc => "Out put format.", :enum => [ "yaml", "json" ]
     def get
       if options[:id]
         url = "/record.json"
@@ -62,12 +62,14 @@ module KCLI
       puts JSON.generate( res["records"] )
     end # end get
 
-    desc "record delete", "Delete a list of records."
-    method_option :ids, :desc => "The IDs. It should be JSON like [12, 32]", :required => true
-    def delete()
+    desc "record delete <id> ...", "Delete a list of records."
+    method_option :format, :desc => "Input format of IDs.",
+        :enum => [ "yaml", "json", "array" ], :default => "array"
+    def delete( *ids )
+      deletes = KCLI.parse_args_for_delete_record( ids, options )
       params = {
         "app" => options[:app],
-        "ids" => JSON.parse( options[:ids] )
+        "ids" => deletes
       }
       res = KCLI.send( "/records.json", :delete, params )
       puts JSON.generate( res )

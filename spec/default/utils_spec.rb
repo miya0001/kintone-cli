@@ -6,6 +6,78 @@ require 'shellwords'
 require 'kintone/cli'
 
 describe KCLI do
+  it "parsing args for delete records with yaml" do
+    ids = <<-'YAML'
+- $id: 1
+  name: John
+- $id: 2
+  name: Mike
+- $id: 3
+  name: Nancy
+    YAML
+    options = {}
+    options[:format] = "yaml"
+    res = KCLI.parse_args_for_delete_record( [ ids ], options )
+    expect( res ).to eq [ 1, 2, 3 ]
+  end
+
+  it "parsing args for delete records with yaml" do
+    ids = <<-'YAML'
+- id: 1
+  name: John
+- id: 2
+  name: Mike
+- id: 3
+  name: Nancy
+    YAML
+    options = {}
+    options[:format] = "yaml"
+    res = KCLI.parse_args_for_delete_record( [ ids ], options )
+    expect( res ).to eq [ 1, 2, 3 ]
+  end
+
+  it "parsing args for delete records with yaml" do
+    ids = YAML.dump( [ 1, 2, 3 ] )
+    options = {}
+    options[:format] = "yaml"
+    res = KCLI.parse_args_for_delete_record( [ ids ], options )
+    expect( res ).to eq [ 1, 2, 3 ]
+  end
+
+  it "parsing args for delete records with json" do
+    ids = JSON.generate( [
+      { "$id": 1, name: "John" }, { "$id": 2, name: "Mike" }, { "$id": 3, name: "Nancy" }
+    ] )
+    options = {}
+    options[:format] = "json"
+    res = KCLI.parse_args_for_delete_record( [ ids ], options )
+    expect( res ).to eq [ 1, 2, 3 ]
+  end
+
+  it "parsing args for delete records with json" do
+    ids = JSON.generate( [ { id: 1 }, { id: 2 }, { id: 3 } ] )
+    options = {}
+    options[:format] = "json"
+    res = KCLI.parse_args_for_delete_record( [ ids ], options )
+    expect( res ).to eq [ 1, 2, 3 ]
+  end
+
+  it "parsing args for delete records with json" do
+    ids = JSON.generate( [ 1, 2, 3 ] )
+    options = {}
+    options[:format] = "json"
+    res = KCLI.parse_args_for_delete_record( [ ids ], options )
+    expect( res ).to eq [ 1, 2, 3 ]
+  end
+
+  it "parsing args for delete records with array" do
+    ids = [ 1, 2, 3 ]
+    options = {}
+    options[:format] = "array"
+    res = KCLI.parse_args_for_delete_record( ids, options )
+    expect( res ).to eq [ 1, 2, 3 ]
+  end
+
   it "tests for sccess()" do
     output = capture(:stdout) {
       KCLI.success( "Hello")

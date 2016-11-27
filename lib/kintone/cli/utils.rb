@@ -33,16 +33,14 @@ module Kintone_Cli
         return items
       end
 
-      def parse_yaml(yaml)
-        items = YAML.load_file( yaml )
-
+      def parse_yaml( items )
         kintone_array = []
         items.each do | item |
           record = {
             "record" => {}
           }
           item.each do | key, value |
-            if "id" == key
+            if "id" == key || '$id' == key
               record["id"] = value
             else
               record["record"][key] = {

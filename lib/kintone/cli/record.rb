@@ -3,6 +3,7 @@
 
 require "thor"
 require "json"
+require "yaml"
 
 module Kintone_Cli
 
@@ -34,7 +35,8 @@ module Kintone_Cli
 
     desc "record post", "Post a list of records."
     def post( yaml )
-      records = Kintone_Cli::Utils.parse_yaml( yaml )
+      items = YAML.load_file( yaml )
+      records = Kintone_Cli::Utils.parse_yaml( items )
       posts = []
       records.each do | item |
         posts.push( item["record"] )
@@ -49,7 +51,8 @@ module Kintone_Cli
 
     desc "record put", "Update a list of records."
     def put( yaml )
-      update = Kintone_Cli::Utils.parse_yaml( yaml )
+      items = YAML.load_file( yaml )
+      update = Kintone_Cli::Utils.parse_yaml( items )
 
       params = {
         "app" => options[:app],

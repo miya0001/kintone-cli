@@ -12,7 +12,7 @@ module KCLI
     desc "record get", "Get a list of records."
     method_option :id, :desc => "The record ID."
     method_option :format, :desc => "Output format.", :enum => [ "yaml", "json", "raw" ], :default => "json"
-    method_option :query, :desc => "Path to the JSON file that filters the data from the Kintone."
+    method_option :query, :desc => "Query strings or path to the JSON file that filters the data from the Kintone."
     def get
       if options[:id]
         url = "/record.json"
@@ -21,13 +21,18 @@ module KCLI
         records = [ res["record"] ]
       else
         url = "/records.json"
+        params = {}
+
         if options[:query]
-          json = KCLI::readfile( options[:query] )
-          params = KCLI::json_decode( json )
-          params["app"] = options[:app]
-        else
-          params = { "app" => options[:app] }
+          if File.exists?( options[:query] )
+            json = KCLI::readfile( options[:query] )
+            params = KCLI::json_decode( json )
+          else
+            params["query"] = options[:query]
+          end
         end
+
+        params["app"] = options[:app]
         res = KCLI::send( url, :get, params )
         records = res["records"]
       end
